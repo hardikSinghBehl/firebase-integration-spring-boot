@@ -3,6 +3,8 @@ package com.behl.sunspot.controller;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.validation.Valid;
+
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +39,7 @@ public class DirectorMovieMappingController {
 	@PostMapping
 	@Operation(summary = "Maps The Director And Movie In The Firebase Collection")
 	public ResponseEntity<?> directorMovieMappingCreationHandler(
-			@RequestBody(required = true) final DirectorMovieMapping directorMovieMapping) throws JSONException {
+			@Valid @RequestBody(required = true) final DirectorMovieMapping directorMovieMapping) throws JSONException {
 		return directorMovieMappingService.createMapping(directorMovieMapping);
 	}
 

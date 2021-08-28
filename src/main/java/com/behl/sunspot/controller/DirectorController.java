@@ -1,5 +1,7 @@
 package com.behl.sunspot.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +29,7 @@ public class DirectorController {
 
 	@PostMapping
 	@Operation(summary = "Creates A Director Document Inside Firebase And Returns It's Id")
-	public ResponseEntity<?> directorCreationHandler(@RequestBody(required = true) final Director director) {
+	public ResponseEntity<?> directorCreationHandler(@Valid @RequestBody(required = true) final Director director) {
 		return directorService.createDirector(director);
 	}
 
@@ -42,7 +44,7 @@ public class DirectorController {
 	@Operation(summary = "Returns Updated Director Document Corresponding To Provided Id")
 	public ResponseEntity<?> directorUpdationHandler(
 			@PathVariable(name = "directorId", required = true) final String directorId,
-			@RequestBody(required = true) final Director director) {
+			@Valid @RequestBody(required = true) final Director director) {
 		return directorService.update(directorId, director);
 	}
 

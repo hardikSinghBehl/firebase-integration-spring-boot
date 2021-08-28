@@ -1,5 +1,7 @@
 package com.behl.sunspot.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +29,7 @@ public class MovieController {
 
 	@PostMapping
 	@Operation(summary = "Creates A Movie Document Inside Firebase And Returns It's Id")
-	public ResponseEntity<?> movieCreationHandler(@RequestBody(required = true) final Movie movieId) {
+	public ResponseEntity<?> movieCreationHandler(@Valid @RequestBody(required = true) final Movie movieId) {
 		return movieService.createMovie(movieId);
 	}
 
@@ -41,7 +43,7 @@ public class MovieController {
 	@PutMapping(value = "/{movieId}")
 	@Operation(summary = "Returns Updated Movie Document Corresponding To Provided Id")
 	public ResponseEntity<?> movieUpdationHandler(@PathVariable(name = "movieId", required = true) final String movieId,
-			@RequestBody(required = true) final Movie movie) {
+			@Valid @RequestBody(required = true) final Movie movie) {
 		return movieService.update(movieId, movie);
 	}
 
