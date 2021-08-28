@@ -1,5 +1,7 @@
 package com.behl.sunspot.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.behl.sunspot.dto.DirectorDto;
 import com.behl.sunspot.entity.Director;
 import com.behl.sunspot.service.DirectorService;
 
@@ -46,6 +49,12 @@ public class DirectorController {
 			@PathVariable(name = "directorId", required = true) final String directorId,
 			@Valid @RequestBody(required = true) final Director director) {
 		return directorService.update(directorId, director);
+	}
+
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Returns list of all directors")
+	public ResponseEntity<List<DirectorDto>> directorsRetreivalHandler() {
+		return ResponseEntity.ok(directorService.retreiveAll());
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.behl.sunspot.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.behl.sunspot.dto.MovieDto;
 import com.behl.sunspot.entity.Movie;
 import com.behl.sunspot.service.MovieService;
 
@@ -47,4 +50,9 @@ public class MovieController {
 		return movieService.update(movieId, movie);
 	}
 
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Returns list of all movies")
+	public ResponseEntity<List<MovieDto>> moviesRetreivalHandler() {
+		return ResponseEntity.ok(movieService.retreiveAll());
+	}
 }
