@@ -9,6 +9,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.behl.sunspot.constant.Entity;
 import com.behl.sunspot.entity.Movie;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -22,7 +23,7 @@ public class MovieService {
 	private final Firestore firestore;
 
 	public Movie retreive(final String movieId) throws InterruptedException, ExecutionException {
-		DocumentSnapshot retrievedMovie = firestore.collection("movies").document(movieId).get().get();
+		DocumentSnapshot retrievedMovie = firestore.collection(Entity.MOVIE.getName()).document(movieId).get().get();
 		return retrievedMovie.exists() ? retrievedMovie.toObject(Movie.class) : null;
 	}
 
@@ -30,7 +31,7 @@ public class MovieService {
 		final var response = new JSONObject();
 		final var movieId = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
 
-		firestore.collection("movies").document(movieId).set(movie);
+		firestore.collection(Entity.MOVIE.getName()).document(movieId).set(movie);
 
 		response.put("id", movieId);
 		response.put("timestamp", LocalDateTime.now());
@@ -40,7 +41,7 @@ public class MovieService {
 	public ResponseEntity<?> update(String movieId, Movie movie) throws JSONException {
 		final var response = new JSONObject();
 
-		firestore.collection("movies").document(movieId).set(movie);
+		firestore.collection(Entity.MOVIE.getName()).document(movieId).set(movie);
 
 		response.put("id", movieId);
 		response.put("timestamp", LocalDateTime.now());
