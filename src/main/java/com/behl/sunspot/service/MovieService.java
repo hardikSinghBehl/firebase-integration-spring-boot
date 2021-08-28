@@ -31,7 +31,7 @@ public class MovieService {
 			retrievedMovie = firestore.collection(Entity.MOVIE.getName()).document(movieId).get().get();
 		} catch (InterruptedException | ExecutionException e) {
 			log.error("Unable to retreive movie with id {}: {}", movieId, e);
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED);
 		}
 		final var movie = retrievedMovie.exists() ? retrievedMovie.toObject(Movie.class) : null;
 		if (movie == null)
