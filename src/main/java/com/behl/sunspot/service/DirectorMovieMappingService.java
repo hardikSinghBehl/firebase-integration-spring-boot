@@ -6,8 +6,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class DirectorMovieMappingService {
 		}).collect(Collectors.toList());
 	}
 
-	public ResponseEntity<?> createMapping(final DirectorMovieMapping directorMovieMapping) throws JSONException {
+	public ResponseEntity<?> createMapping(final DirectorMovieMapping directorMovieMapping) {
 		final var response = new JSONObject();
 		final var mappingId = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
 
@@ -53,7 +52,7 @@ public class DirectorMovieMappingService {
 		return ResponseEntity.ok(response.toString());
 	}
 
-	public ResponseEntity<?> delete(String mappingId) throws JSONException {
+	public ResponseEntity<?> delete(String mappingId) {
 		final var response = new JSONObject();
 
 		firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName()).document(mappingId).delete();
