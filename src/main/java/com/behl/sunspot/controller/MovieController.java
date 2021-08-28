@@ -27,7 +27,7 @@ public class MovieController {
 
 	private final MovieService movieService;
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Creates A Movie Document Inside Firebase And Returns It's Id")
 	public ResponseEntity<?> movieCreationHandler(@Valid @RequestBody(required = true) final Movie movieId) {
 		return movieService.createMovie(movieId);
@@ -40,7 +40,7 @@ public class MovieController {
 		return ResponseEntity.ok(movieService.retreive(movieId));
 	}
 
-	@PutMapping(value = "/{movieId}")
+	@PutMapping(value = "/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Returns Updated Movie Document Corresponding To Provided Id")
 	public ResponseEntity<?> movieUpdationHandler(@PathVariable(name = "movieId", required = true) final String movieId,
 			@Valid @RequestBody(required = true) final Movie movie) {

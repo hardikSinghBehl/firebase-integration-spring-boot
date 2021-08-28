@@ -36,7 +36,7 @@ public class DirectorMovieMappingController {
 
 	private final DirectorMovieMappingService directorMovieMappingService;
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Maps The Director And Movie In The Firebase Collection")
 	public ResponseEntity<?> directorMovieMappingCreationHandler(
 			@Valid @RequestBody(required = true) final DirectorMovieMapping directorMovieMapping) throws JSONException {
@@ -55,7 +55,7 @@ public class DirectorMovieMappingController {
 		}
 	}
 
-	@DeleteMapping(value = "/{mappingId}")
+	@DeleteMapping(value = "/{mappingId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Deletes Specified Mapping Of Movie And Director")
 	public ResponseEntity<?> directorMovieMappingDeletionHandler(
 			@PathVariable(required = true, name = "mappingId") final String mappingId) {

@@ -27,7 +27,7 @@ public class DirectorController {
 
 	private final DirectorService directorService;
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Creates A Director Document Inside Firebase And Returns It's Id")
 	public ResponseEntity<?> directorCreationHandler(@Valid @RequestBody(required = true) final Director director) {
 		return directorService.createDirector(director);
@@ -40,7 +40,7 @@ public class DirectorController {
 		return ResponseEntity.ok(directorService.retreive(directorId));
 	}
 
-	@PutMapping(value = "/{directorId}")
+	@PutMapping(value = "/{directorId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Returns Updated Director Document Corresponding To Provided Id")
 	public ResponseEntity<?> directorUpdationHandler(
 			@PathVariable(name = "directorId", required = true) final String directorId,
