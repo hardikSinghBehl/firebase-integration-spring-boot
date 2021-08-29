@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,5 +56,13 @@ public class MovieController {
 	@Operation(summary = "Returns list of all movies")
 	public ResponseEntity<List<MovieDto>> moviesRetreivalHandler() {
 		return ResponseEntity.ok(movieService.retreiveAll());
+	}
+
+	@DeleteMapping(value = "/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Deletes movie and corresponding directorMovieMapping documents")
+	public ResponseEntity<?> movieDocumentDeletionHandler(
+			@PathVariable(required = true, name = "movieId") final String movieId) {
+		movieService.delete(movieId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

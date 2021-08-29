@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.behl.sunspot.constant.Entity;
+import com.behl.sunspot.dto.DirectorDto;
+import com.behl.sunspot.dto.MovieDto;
+import com.behl.sunspot.entity.Director;
 import com.behl.sunspot.entity.DirectorMovieMapping;
 import com.behl.sunspot.entity.Movie;
 import com.google.cloud.firestore.Firestore;
@@ -23,7 +26,7 @@ public class DirectorMovieMappingService {
 
 	private final Firestore firestore;
 
-	public List<Movie> retreiveMoviesByDirectorId(final String directorId)
+	public List<MovieDto> retreiveMoviesByDirectorId(final String directorId)
 			throws InterruptedException, ExecutionException {
 
 		final var mappingList = firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName())
@@ -33,8 +36,32 @@ public class DirectorMovieMappingService {
 			final var directorMovieMapping = mapping.toObject(DirectorMovieMapping.class);
 
 			try {
-				return firestore.collection(Entity.MOVIE.getName()).document(directorMovieMapping.getMovieId()).get()
-						.get().toObject(Movie.class);
+				final var movieDocument = firestore.collection(Entity.MOVIE.getName())
+						.document(directorMovieMapping.getMovieId()).get().get();
+				final var movie = movieDocument.toObject(Movie.class);
+				return MovieDto.builder().name(movie.getName()).durationInMinutes(movie.getDurationInMinutes())
+						.id(movieDocument.getId()).build();
+			} catch (InterruptedException | ExecutionException e) {
+				return null;
+			}
+		}).collect(Collectors.toList());
+	}
+
+	public List<DirectorDto> retreiveDirectorByMovieId(final String movieId)
+			throws InterruptedException, ExecutionException {
+
+		final var mappingList = firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName())
+				.whereEqualTo("movieId", movieId).get().get().getDocuments();
+
+		return mappingList.stream().map(mapping -> {
+			final var directorMovieMapping = mapping.toObject(DirectorMovieMapping.class);
+
+			try {
+				final var directorDocument = firestore.collection(Entity.DIRECTOR.getName())
+						.document(directorMovieMapping.getDirectorId()).get().get();
+				final var director = directorDocument.toObject(Director.class);
+				return DirectorDto.builder().firstName(director.getFirstName()).lastName(director.getLastName())
+						.country(director.getCountry()).id(directorDocument.getId()).build();
 			} catch (InterruptedException | ExecutionException e) {
 				return null;
 			}

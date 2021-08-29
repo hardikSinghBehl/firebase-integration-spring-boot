@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +57,14 @@ public class DirectorController {
 	@Operation(summary = "Returns list of all directors")
 	public ResponseEntity<List<DirectorDto>> directorsRetreivalHandler() {
 		return ResponseEntity.ok(directorService.retreiveAll());
+	}
+
+	@DeleteMapping(value = "/{directorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Deletes director and corresponding directorMovieMapping documents")
+	public ResponseEntity<?> directorDocumentDeletionHandler(
+			@PathVariable(required = true, name = "directorId") final String directorId) {
+		directorService.delete(directorId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 }

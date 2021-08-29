@@ -78,4 +78,18 @@ public class DirectorService {
 		}
 	}
 
+	public void delete(final String directorId) {
+		try {
+			firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName()).whereEqualTo("directorId", directorId).get()
+					.get().getDocuments().forEach(directorMovieMapping -> {
+						firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName())
+								.document(directorMovieMapping.getId()).delete();
+					});
+			firestore.collection(Entity.DIRECTOR.getName()).document(directorId).delete();
+		} catch (InterruptedException | ExecutionException e) {
+			log.error("Unable to delete directorMovieMapping records of director: {} from database: {}", directorId, e);
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+
 }

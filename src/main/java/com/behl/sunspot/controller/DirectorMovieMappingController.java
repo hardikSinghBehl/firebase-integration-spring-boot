@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.behl.sunspot.dto.DirectorDto;
+import com.behl.sunspot.dto.MovieDto;
 import com.behl.sunspot.entity.DirectorMovieMapping;
-import com.behl.sunspot.entity.Movie;
 import com.behl.sunspot.service.DirectorMovieMappingService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,14 +44,26 @@ public class DirectorMovieMappingController {
 		return directorMovieMappingService.createMapping(directorMovieMapping);
 	}
 
-	@GetMapping(value = "/{directorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/movies/{directorId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Returns List of Movies Directed By The Provided Director")
-	public ResponseEntity<List<Movie>> getMoviesByDirectorId(
+	public ResponseEntity<List<MovieDto>> getMoviesByDirectorId(
 			@PathVariable(required = true, name = "directorId") final String directorId) {
 		try {
 			return ResponseEntity.ok(directorMovieMappingService.retreiveMoviesByDirectorId(directorId));
 		} catch (InterruptedException | ExecutionException e) {
 			log.error("Unable to retrieve movies of director with id {}: {}", directorId, e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping(value = "/directors/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Returns List of Directors Associated with The Provided Movie")
+	public ResponseEntity<List<DirectorDto>> getDirectorsByMovieId(
+			@PathVariable(required = true, name = "movieId") final String movieId) {
+		try {
+			return ResponseEntity.ok(directorMovieMappingService.retreiveDirectorByMovieId(movieId));
+		} catch (InterruptedException | ExecutionException e) {
+			log.error("Unable to retrieve directors of movie with id {}: {}", movieId, e);
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 	}
