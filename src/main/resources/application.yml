@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: flare
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+    
+com:
+  behl:
+    flare:
+      firebase:
+        private-key: ./src/main/resources/private-key.json
+      open-api:
+        enabled: true
+        api-version: 1.0.0
+        title: Flare
+        description: Backend application integrating with firebase authentication and storage service to build a secure CRUD application
