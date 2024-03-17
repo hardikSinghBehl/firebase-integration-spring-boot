@@ -6,7 +6,7 @@ import com.behl.flare.entity.TaskStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class TaskUpdationRequestDto {
 	@Schema(requiredMode = RequiredMode.REQUIRED, description = "status of the task", example = "COMPLETED")
 	private TaskStatus status;
 
-	@Future(message = "DueDate must be a future date")
+	@FutureOrPresent(message = "DueDate must be a future date")
 	@NotNull(message = "DueDate must not be empty")
 	@Schema(requiredMode = RequiredMode.REQUIRED, description = "due-date of the task")
 	private LocalDate dueDate;
