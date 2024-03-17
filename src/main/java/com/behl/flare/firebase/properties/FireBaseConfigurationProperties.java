@@ -1,10 +1,10 @@
-package com.behl.sunspot.firebase.properties;
+package com.behl.flare.firebase.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.Data;
 
-@ConfigurationProperties(prefix = "com.hardik.sunspot")
+@ConfigurationProperties(prefix = "com.behl.flare")
 @Data
 public class FireBaseConfigurationProperties {
 

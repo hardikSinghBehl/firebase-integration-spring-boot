@@ -1,4 +1,4 @@
-package com.behl.sunspot.controller;
+package com.behl.flare.controller;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.behl.sunspot.dto.MovieDto;
-import com.behl.sunspot.entity.Movie;
-import com.behl.sunspot.service.MovieService;
+import com.behl.flare.dto.MovieDto;
+import com.behl.flare.entity.Movie;
+import com.behl.flare.service.MovieService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;

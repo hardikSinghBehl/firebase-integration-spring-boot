@@ -1,4 +1,4 @@
-package com.behl.sunspot.exception.handler;
+package com.behl.flare.exception.handler;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

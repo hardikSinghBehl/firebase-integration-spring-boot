@@ -1,4 +1,4 @@
-package com.behl.sunspot.service;
+package com.behl.flare.service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -12,9 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.behl.sunspot.constant.Entity;
-import com.behl.sunspot.dto.MovieDto;
-import com.behl.sunspot.entity.Movie;
+import com.behl.flare.constant.Entity;
+import com.behl.flare.dto.MovieDto;
+import com.behl.flare.entity.Movie;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 

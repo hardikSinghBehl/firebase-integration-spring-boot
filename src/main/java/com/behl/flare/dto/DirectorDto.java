@@ -1,4 +1,4 @@
-package com.behl.sunspot.dto;
+package com.behl.flare.dto;
 
 import lombok.Builder;
 import lombok.Data;

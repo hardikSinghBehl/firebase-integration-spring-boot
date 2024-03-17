@@ -1,4 +1,4 @@
-package com.behl.sunspot.service;
+package com.behl.flare.service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,12 +10,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.behl.sunspot.constant.Entity;
-import com.behl.sunspot.dto.DirectorDto;
-import com.behl.sunspot.dto.MovieDto;
-import com.behl.sunspot.entity.Director;
-import com.behl.sunspot.entity.DirectorMovieMapping;
-import com.behl.sunspot.entity.Movie;
+import com.behl.flare.constant.Entity;
+import com.behl.flare.dto.DirectorDto;
+import com.behl.flare.dto.MovieDto;
+import com.behl.flare.entity.Director;
+import com.behl.flare.entity.DirectorMovieMapping;
+import com.behl.flare.entity.Movie;
 import com.google.cloud.firestore.Firestore;
 
 import lombok.AllArgsConstructor;

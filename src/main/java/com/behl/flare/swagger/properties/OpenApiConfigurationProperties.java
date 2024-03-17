@@ -1,11 +1,11 @@
-package com.behl.sunspot.swagger.properties;
+package com.behl.flare.swagger.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.Data;
 
 @Data
-@ConfigurationProperties(prefix = "com.behl.sunspot")
+@ConfigurationProperties(prefix = "com.behl.flare")
 public class OpenApiConfigurationProperties {
 
 	private Swagger swagger = new Swagger();

@@ -1,4 +1,4 @@
-package com.behl.sunspot.constant;
+package com.behl.flare.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

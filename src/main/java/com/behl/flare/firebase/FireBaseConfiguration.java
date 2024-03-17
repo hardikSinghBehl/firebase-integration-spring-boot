@@ -1,4 +1,4 @@
-package com.behl.sunspot.firebase;
+package com.behl.flare.firebase;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.behl.sunspot.firebase.properties.FireBaseConfigurationProperties;
+import com.behl.flare.firebase.properties.FireBaseConfigurationProperties;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;

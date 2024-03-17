@@ -1,4 +1,4 @@
-package com.behl.sunspot.controller;
+package com.behl.flare.controller;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.behl.sunspot.dto.DirectorDto;
-import com.behl.sunspot.dto.MovieDto;
-import com.behl.sunspot.entity.DirectorMovieMapping;
-import com.behl.sunspot.service.DirectorMovieMappingService;
+import com.behl.flare.dto.DirectorDto;
+import com.behl.flare.dto.MovieDto;
+import com.behl.flare.entity.DirectorMovieMapping;
+import com.behl.flare.service.DirectorMovieMappingService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;

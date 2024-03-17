@@ -1,10 +1,10 @@
-package com.behl.sunspot.swagger;
+package com.behl.flare.swagger;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.behl.sunspot.swagger.properties.OpenApiConfigurationProperties;
+import com.behl.flare.swagger.properties.OpenApiConfigurationProperties;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

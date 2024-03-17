@@ -1,4 +1,4 @@
-package com.behl.sunspot.entity;
+package com.behl.flare.entity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
