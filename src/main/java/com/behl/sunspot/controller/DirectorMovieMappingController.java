@@ -3,7 +3,7 @@ package com.behl.sunspot.controller;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;

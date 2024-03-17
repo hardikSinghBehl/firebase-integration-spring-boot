@@ -30,7 +30,7 @@ public class FireBaseConfiguration {
 		final var properites = fireBaseConfigurationProperties.getFirebase();
 
 		FileInputStream serviceAccount = new FileInputStream(properites.getFirebasePrivateKey());
-		FirebaseOptions options = new FirebaseOptions.Builder()
+		FirebaseOptions options = FirebaseOptions.builder()
 				.setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
 
 		if (FirebaseApp.getApps().isEmpty()) {

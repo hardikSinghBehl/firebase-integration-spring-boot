@@ -1,12 +1,12 @@
 package com.behl.sunspot.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +69,7 @@ public class DirectorMovieMappingService {
 	}
 
 	public ResponseEntity<?> createMapping(final DirectorMovieMapping directorMovieMapping) {
-		final var response = new JSONObject();
+		final var response = new HashMap<String, Object>();
 		final var mappingId = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
 
 		firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName()).document(mappingId).set(directorMovieMapping);
@@ -80,7 +80,7 @@ public class DirectorMovieMappingService {
 	}
 
 	public ResponseEntity<?> delete(String mappingId) {
-		final var response = new JSONObject();
+		final var response =new HashMap<String, Object>();
 
 		firestore.collection(Entity.DIRECTOR_MOVIE_MAPPING.getName()).document(mappingId).delete();
 
