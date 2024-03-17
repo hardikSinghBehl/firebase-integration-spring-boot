@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class TaskCreationRequestDto {
 	@Schema(requiredMode = RequiredMode.REQUIRED, description = "description of the task", example = "Resolve user authentication issue detailed in Jira#9051")
 	private String description;
 
-	@Future(message = "DueDate must be a future date")
+	@FutureOrPresent(message = "DueDate must be a future date")
 	@NotNull(message = "DueDate must not be empty")
 	@Schema(requiredMode = RequiredMode.REQUIRED, description = "due-date of the task")
 	private LocalDate dueDate;
