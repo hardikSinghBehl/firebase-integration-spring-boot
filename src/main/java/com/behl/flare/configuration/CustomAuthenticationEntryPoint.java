@@ -20,8 +20,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 	@Override
 	@SneakyThrows
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException authException) {
+	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
 		handlerExceptionResolver.resolveException(request, response, null, new TokenVerificationException());
 	}
 

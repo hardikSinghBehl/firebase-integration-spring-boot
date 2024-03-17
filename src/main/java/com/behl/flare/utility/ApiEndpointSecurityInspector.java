@@ -50,7 +50,6 @@ public class ApiEndpointSecurityInspector {
 				} else if (httpMethod.equals(POST)) {
 					publicPostEndpoints.addAll(apiPaths);
 				}
-				
 			}
 		});
 		
