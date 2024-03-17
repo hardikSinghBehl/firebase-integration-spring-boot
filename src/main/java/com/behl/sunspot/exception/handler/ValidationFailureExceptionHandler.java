@@ -2,10 +2,10 @@ package com.behl.sunspot.exception.handler;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,7 +26,7 @@ public class ValidationFailureExceptionHandler {
 		BindingResult result = ex.getBindingResult();
 		List<FieldError> fieldErrors = result.getFieldErrors();
 
-		final var response = new JSONObject();
+		final var response = new HashMap<String, Object>();
 		response.put("status", "Failure");
 		response.put("message",
 				fieldErrors.stream().map(fieldError -> fieldError.getDefaultMessage()).collect(Collectors.toList()));

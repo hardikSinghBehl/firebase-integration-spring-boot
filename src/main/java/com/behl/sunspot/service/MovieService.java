@@ -1,12 +1,12 @@
 package com.behl.sunspot.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class MovieService {
 	}
 
 	public ResponseEntity<?> createMovie(final Movie movie) {
-		final var response = new JSONObject();
+		final var response = new HashMap<String, Object>();
 		final var movieId = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
 
 		firestore.collection(Entity.MOVIE.getName()).document(movieId).set(movie);
@@ -54,7 +54,7 @@ public class MovieService {
 	}
 
 	public ResponseEntity<?> update(final String movieId, final Movie movie) {
-		final var response = new JSONObject();
+		final var response = new HashMap<String, Object>();
 
 		firestore.collection(Entity.MOVIE.getName()).document(movieId).set(movie);
 
