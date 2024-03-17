@@ -60,7 +60,8 @@ public class TaskService {
 	}
 	
 	public void delete(@NonNull final String taskId) {
-		firestore.collection(Task.name()).document(taskId).delete();
+		final var document = get(taskId);
+		firestore.collection(Task.name()).document(document.getId()).delete();
 	}
 	
 	private void save(@NonNull final Task task) {
