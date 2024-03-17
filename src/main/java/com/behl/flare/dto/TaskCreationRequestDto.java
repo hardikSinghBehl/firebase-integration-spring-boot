@@ -2,9 +2,6 @@ package com.behl.flare.dto;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Future;
@@ -15,7 +12,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonNaming(value = PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 @Schema(title = "TaskCreationRequest", accessMode = Schema.AccessMode.WRITE_ONLY)
 public class TaskCreationRequestDto {
 
