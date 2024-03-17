@@ -46,7 +46,7 @@ public class TaskService {
 		task.setDescription(taskCreationRequest.getDescription());
 		task.setDueDate(dateUtility.convert(taskCreationRequest.getDueDate()));
 
-		save(task);
+		firestore.collection(Task.name()).document().set(task);
 	}
 	
 	public void update(@NonNull final String taskId, @NonNull final TaskUpdationRequestDto taskUpdationRequest) {
@@ -56,16 +56,12 @@ public class TaskService {
 		task.setStatus(taskUpdationRequest.getStatus());
 		task.setDueDate(dateUtility.convert(taskUpdationRequest.getDueDate()));
 		
-		save(task);
+		firestore.collection(Task.name()).document(retrievedDocument.getId()).set(task);
 	}
 	
 	public void delete(@NonNull final String taskId) {
 		final var document = get(taskId);
 		firestore.collection(Task.name()).document(document.getId()).delete();
-	}
-	
-	private void save(@NonNull final Task task) {
-		firestore.collection(Task.name()).document().set(task);
 	}
 	
 	@SneakyThrows
