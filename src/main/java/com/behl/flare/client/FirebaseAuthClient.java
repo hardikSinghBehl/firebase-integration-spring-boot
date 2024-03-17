@@ -2,6 +2,7 @@ package com.behl.flare.client;
 
 import java.util.Map;
 
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import com.behl.flare.configuration.FirebaseConfigurationProperties;
 import com.behl.flare.dto.TokenSuccessResponseDto;
 import com.behl.flare.dto.UserLoginRequestDto;
 import com.behl.flare.exception.InvalidLoginCredentialsException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,13 @@ public class FirebaseAuthClient {
 	private static final String ACCESS_TOKEN_KEY = "idToken";
 	private static final String API_KEY_PARAM = "key";
 	private static final String INVALID_CREDENTIALS_ERROR = "INVALID_LOGIN_CREDENTIALS";
+	private static final String SECURE_TOKEN_FIELD = "returnSecureToken";
     
 	@SneakyThrows
 	@SuppressWarnings("unchecked")
 	public TokenSuccessResponseDto login(@NonNull final UserLoginRequestDto userLoginRequest) {
 		final var webApiKey = firebaseConfigurationProperties.getFirebase().getWebApiKey();
+		final var requestBody = prepareRequestBody(userLoginRequest);
 		final Map<String, String> response;
 		try {
 			response = RestClient.create(BASE_URL)
@@ -41,7 +45,7 @@ public class FirebaseAuthClient {
 							.uri(uriBuilder -> uriBuilder
 									.queryParam(API_KEY_PARAM, webApiKey)
 									.build())
-							.body(userLoginRequest)
+							.body(requestBody)
 							.contentType(MediaType.APPLICATION_JSON)
 							.retrieve()
 							.body(Map.class);
@@ -56,6 +60,14 @@ public class FirebaseAuthClient {
 		return TokenSuccessResponseDto.builder()
 				.accessToken(accessToken)
 				.build();
+	}
+	
+	@SneakyThrows
+	private String prepareRequestBody(@NonNull final UserLoginRequestDto userLoginRequest) {
+		final var requestBody = new ObjectMapper().writeValueAsString(userLoginRequest);
+		return new JSONObject(requestBody)
+				.put(SECURE_TOKEN_FIELD, true)
+				.toString();
 	}
 
 }
