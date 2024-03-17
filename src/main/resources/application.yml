@@ -11,7 +11,8 @@ com:
   behl:
     flare:
       firebase:
-        private-key: ./src/main/resources/private-key.json
+        private-key: ${FIREBASE_PRIVATE_KEY}
+        web-api-key: ${FIREBASE_WEB_API_KEY}
       open-api:
         enabled: true
         api-version: 1.0.0
