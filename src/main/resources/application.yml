@@ -11,7 +11,7 @@ com:
   behl:
     flare:
       firebase:
-        private-key: ./sunspot-private-key.json
+        private-key: ./src/main/resources/private-key.json
       open-api:
         enabled: true
         api-version: 1.0.0
