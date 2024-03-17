@@ -1,6 +1,6 @@
 package com.behl.flare.configuration;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ public class FirebaseConfiguration {
 	@SneakyThrows
 	public FirebaseApp firebaseApp() {
 		final var privateKey = fireBaseConfigurationProperties.getFirebase().getPrivateKey();
-		final var serviceAccount = new FileInputStream(privateKey);
+		final var serviceAccount = new ByteArrayInputStream(privateKey.getBytes());
 		final var firebaseOptions = FirebaseOptions.builder()
 				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 				.build();
