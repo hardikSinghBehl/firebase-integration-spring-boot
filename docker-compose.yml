@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  backend-application:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: backend-application
+    ports:
+    - 8080:8080
+    environment:
+      FIREBASE_PRIVATE_KEY:
+      FIREBASE_WEB_API_KEY:
