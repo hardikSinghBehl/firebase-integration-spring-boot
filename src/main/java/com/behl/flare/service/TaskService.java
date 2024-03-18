@@ -10,6 +10,8 @@ import com.behl.flare.dto.TaskUpdationRequestDto;
 import com.behl.flare.entity.Task;
 import com.behl.flare.entity.TaskStatus;
 import com.behl.flare.exception.InvalidTaskIdException;
+import com.behl.flare.exception.TaskOwnershipViolationException;
+import com.behl.flare.utility.AuthenticatedUserIdProvider;
 import com.behl.flare.utility.DateUtility;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -24,19 +26,26 @@ public class TaskService {
 
 	private final Firestore firestore;
 	private final DateUtility dateUtility;
+	private final AuthenticatedUserIdProvider authenticatedUserIdProvider;
 
 	public TaskResponseDto retrieve(@NonNull final String taskId) {
 		final var retrievedDocument = get(taskId);
 		final var task = retrievedDocument.toObject(Task.class);
+		verifyTaskOwnership(task);
+		
 		return creatResponse(retrievedDocument, task);
 	}
 	
 	@SneakyThrows
 	public List<TaskResponseDto> retrieve() {
-		return firestore.collection(Task.name()).get().get().getDocuments().stream().map(document -> {
-			final var task = document.toObject(Task.class);
-			return creatResponse(document, task);
-		}).toList();
+		final var userId = authenticatedUserIdProvider.getUserId();
+		return firestore.collection(Task.name()).whereEqualTo("createdBy", userId)
+				.get().get().getDocuments()
+				.stream()
+				.map(document -> {
+					final var task = document.toObject(Task.class);
+					return creatResponse(document, task);
+				}).toList();
 	}
 	
 	public void create(@NonNull final TaskCreationRequestDto taskCreationRequest) {
@@ -45,6 +54,7 @@ public class TaskService {
 		task.setTitle(taskCreationRequest.getTitle());
 		task.setDescription(taskCreationRequest.getDescription());
 		task.setDueDate(dateUtility.convert(taskCreationRequest.getDueDate()));
+		task.setCreatedBy(authenticatedUserIdProvider.getUserId());
 
 		firestore.collection(Task.name()).document().set(task);
 	}
@@ -52,6 +62,8 @@ public class TaskService {
 	public void update(@NonNull final String taskId, @NonNull final TaskUpdationRequestDto taskUpdationRequest) {
 		final var retrievedDocument = get(taskId);
 		final var task = retrievedDocument.toObject(Task.class);
+		verifyTaskOwnership(task);
+		
 		task.setDescription(taskUpdationRequest.getDescription());
 		task.setStatus(taskUpdationRequest.getStatus());
 		task.setDueDate(dateUtility.convert(taskUpdationRequest.getDueDate()));
@@ -61,7 +73,18 @@ public class TaskService {
 	
 	public void delete(@NonNull final String taskId) {
 		final var document = get(taskId);
+		final var task = document.toObject(Task.class);
+		verifyTaskOwnership(task);
+		
 		firestore.collection(Task.name()).document(document.getId()).delete();
+	}
+
+	private void verifyTaskOwnership(@NonNull final Task task) {
+		final var userId = authenticatedUserIdProvider.getUserId();
+		final var taskBelongsToUser = task.getCreatedBy().equals(userId);
+		if (Boolean.FALSE.equals(taskBelongsToUser)) {
+			throw new TaskOwnershipViolationException();
+		}
 	}
 	
 	@SneakyThrows
