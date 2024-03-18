@@ -16,6 +16,14 @@ import com.behl.flare.exception.InvalidLoginCredentialsException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Client responsible for interacting with the Firebase Authentication service.
+ * This class is required as token exchange with email/password is not supported
+ * natively by the Firebase admin SDK, hence the class invokes the Firebase REST API 
+ * directly.
+ * 
+ * @see <a href="https://firebase.google.com/docs/reference/rest/auth/#section-sign-in-email-password">Sign-in API Documentation</a>
+ */
 @Component
 @RequiredArgsConstructor
 @EnableConfigurationProperties(FirebaseConfigurationProperties.class)
@@ -27,6 +35,15 @@ public class FirebaseAuthClient {
 	private static final String API_KEY_PARAM = "key";
 	private static final String INVALID_CREDENTIALS_ERROR = "INVALID_LOGIN_CREDENTIALS";
     
+	/**
+	 * Performs user login using email and password, returning an access token upon
+	 * successful authentication.
+	 * 
+	 * @param userLoginRequest the request containing user login details
+	 * @return a {@link TokenSuccessResponseDto} containing the access token
+	 * @throws IllegalArgumentException if provided argument is {@code null}
+	 * @throws InvalidLoginCredentialsException if provided login credentials are invalid
+	 */
 	public TokenSuccessResponseDto login(@NonNull final UserLoginRequestDto userLoginRequest) {
 		final var requestBody = prepareRequestBody(userLoginRequest);
 		final var response = sendSignInRequest(requestBody);

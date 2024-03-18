@@ -18,6 +18,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+/**
+ * JwtAuthenticationFilter is a custom filter registered with the spring
+ * security filter chain and works in conjunction with the security
+ * configuration, as defined in {@link com.behl.flare.configuration.SecurityConfiguration}. 
+ * 
+ * It is responsible for verifying the authenticity of incoming HTTP requests to
+ * secured API endpoints by verifying the received access token in the request header
+ * and verifying it using the Firebase authentication service.
+ * 
+ * This filter is only executed for secure endpoints, and is skipped if the incoming
+ * request is destined to a non-secured public API endpoint.
+ *
+ * @see com.behl.flare.utility.ApiEndpointSecurityInspector
+ * @see com.behl.flare.configuration.FirebaseConfiguration
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

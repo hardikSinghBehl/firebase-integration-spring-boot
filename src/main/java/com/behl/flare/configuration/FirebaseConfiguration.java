@@ -16,6 +16,17 @@ import com.google.firebase.cloud.FirestoreClient;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+/**
+ * Configuration class responsible for setting up Firebase services to be used
+ * within the application. It creates objects and stores them inside the
+ * application context to facilitate interaction with:
+ * <ul>
+ *   <li><a href="https://firebase.google.com/docs/auth">Firebase Authentication</a></li>
+ *   <li><a href="https://firebase.google.com/docs/firestore">Firestore database</a></li>
+ * </ul>
+ * 
+ * @see FirebaseConfigurationProperties
+ */
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(FirebaseConfigurationProperties.class)
