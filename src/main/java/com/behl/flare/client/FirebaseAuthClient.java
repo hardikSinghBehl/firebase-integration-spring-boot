@@ -40,14 +40,14 @@ public class FirebaseAuthClient {
 		final FirebaseSignInResponseDto response;
 		try {
 			response = RestClient.create(BASE_URL)
-							.post()
-							.uri(uriBuilder -> uriBuilder
-									.queryParam(API_KEY_PARAM, webApiKey)
-									.build())
-							.body(request)
-							.contentType(MediaType.APPLICATION_JSON)
-							.retrieve()
-							.body(FirebaseSignInResponseDto.class);
+					.post()
+					.uri(uriBuilder -> uriBuilder
+							.queryParam(API_KEY_PARAM, webApiKey)
+							.build())
+					.body(request)
+					.contentType(MediaType.APPLICATION_JSON)
+					.retrieve()
+					.body(FirebaseSignInResponseDto.class);
 		} catch (HttpClientErrorException exception) {
 			if (exception.getResponseBodyAsString().contains(INVALID_CREDENTIALS_ERROR)) {
 				throw new InvalidLoginCredentialsException();	
