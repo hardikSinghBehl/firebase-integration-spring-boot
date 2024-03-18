@@ -19,5 +19,6 @@ public class Task {
 	private String description;
 	private TaskStatus status;
 	private Date dueDate;
+	private String createdBy;
 
 }

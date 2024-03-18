@@ -1,5 +1,7 @@
 package com.behl.flare.filter;
 
+import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	private static final String BEARER_PREFIX = "Bearer ";
+	private static final String USER_ID_CLAIM = "user_id";
 
 	@Override
 	@SneakyThrows
@@ -37,9 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			if (StringUtils.isNotEmpty(authorizationHeader) && authorizationHeader.startsWith(BEARER_PREFIX) ) {
 				final var token = authorizationHeader.replace(BEARER_PREFIX, StringUtils.EMPTY);
 				final var firebaseToken = firebaseAuth.verifyIdToken(token);
-				final var emailId = firebaseToken.getEmail();
+				final var userId = Optional.ofNullable(firebaseToken.getClaims().get(USER_ID_CLAIM)).orElseThrow(IllegalStateException::new);
 				
-				final var authentication = new UsernamePasswordAuthenticationToken(emailId, null, null);
+				final var authentication = new UsernamePasswordAuthenticationToken(userId, null, null);
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			} 
