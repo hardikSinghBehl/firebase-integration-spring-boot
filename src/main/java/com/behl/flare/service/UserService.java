@@ -25,7 +25,7 @@ public class UserService {
 	@SneakyThrows
 	public void create(@NonNull final UserCreationRequestDto userCreationRequest) {		
 		final var request = new CreateRequest();
-		request.setEmail(userCreationRequest.getEmail());
+		request.setEmail(userCreationRequest.getEmailId());
 		request.setPassword(userCreationRequest.getPassword());
 		request.setEmailVerified(Boolean.TRUE);
 
