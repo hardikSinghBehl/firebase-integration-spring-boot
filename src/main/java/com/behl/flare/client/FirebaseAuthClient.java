@@ -2,19 +2,17 @@ package com.behl.flare.client;
 
 import java.util.Map;
 
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import com.behl.flare.configuration.FirebaseConfigurationProperties;
+import com.behl.flare.dto.FirebaseSignInRequestDto;
 import com.behl.flare.dto.TokenSuccessResponseDto;
 import com.behl.flare.dto.UserLoginRequestDto;
 import com.behl.flare.exception.InvalidLoginCredentialsException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,6 @@ public class FirebaseAuthClient {
 	private static final String ACCESS_TOKEN_KEY = "idToken";
 	private static final String API_KEY_PARAM = "key";
 	private static final String INVALID_CREDENTIALS_ERROR = "INVALID_LOGIN_CREDENTIALS";
-	private static final String SECURE_TOKEN_FIELD = "returnSecureToken";
     
 	@SneakyThrows
 	@SuppressWarnings("unchecked")
@@ -50,8 +47,7 @@ public class FirebaseAuthClient {
 							.retrieve()
 							.body(Map.class);
 		} catch (HttpClientErrorException exception) {
-			if (exception.getStatusCode().equals(HttpStatus.BAD_REQUEST)
-					&& exception.getResponseBodyAsString().contains(INVALID_CREDENTIALS_ERROR)) {
+			if (exception.getResponseBodyAsString().contains(INVALID_CREDENTIALS_ERROR)) {
 				throw new InvalidLoginCredentialsException();	
 			}
 			throw exception;
@@ -63,11 +59,12 @@ public class FirebaseAuthClient {
 	}
 	
 	@SneakyThrows
-	private String prepareRequestBody(@NonNull final UserLoginRequestDto userLoginRequest) {
-		final var requestBody = new ObjectMapper().writeValueAsString(userLoginRequest);
-		return new JSONObject(requestBody)
-				.put(SECURE_TOKEN_FIELD, true)
-				.toString();
+	private FirebaseSignInRequestDto prepareRequestBody(@NonNull final UserLoginRequestDto userLoginRequest) {
+		final var request = new FirebaseSignInRequestDto();
+		request.setEmail(userLoginRequest.getEmailId());
+		request.setPassword(userLoginRequest.getPassword());
+		request.setReturnSecureToken(Boolean.TRUE);
+		return request;
 	}
 
 }
