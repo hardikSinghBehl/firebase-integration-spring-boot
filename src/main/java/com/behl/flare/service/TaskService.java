@@ -28,6 +28,15 @@ public class TaskService {
 	private final DateUtility dateUtility;
 	private final AuthenticatedUserIdProvider authenticatedUserIdProvider;
 
+	/**
+	 * Retrieves task details corresponding to provided taskId.
+	 * 
+	 * @param taskId the ID of the task to retrieve
+	 * @return a TaskResponseDto containing details of the retrieved task
+	 * @throws IllegalArgumentException if provided argument is {@code null}
+	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
+	 * @throws TaskOwnershipViolationException if retrieved task is not created by current authenticated user
+	 */
 	public TaskResponseDto retrieve(@NonNull final String taskId) {
 		final var retrievedDocument = get(taskId);
 		final var task = retrievedDocument.toObject(Task.class);
@@ -36,6 +45,12 @@ public class TaskService {
 		return creatResponse(retrievedDocument, task);
 	}
 	
+	/**
+	 * Retrieves all tasks owned by the current authenticated user.
+	 * Returns an empty list if no task record exists for the user.
+	 *
+	 * @return a list of TaskResponseDto representing the user's tasks
+	 */
 	@SneakyThrows
 	public List<TaskResponseDto> retrieve() {
 		final var userId = authenticatedUserIdProvider.getUserId();
@@ -48,6 +63,13 @@ public class TaskService {
 				}).toList();
 	}
 	
+	/**
+	 * Creates a new task record for the current authenticated user
+	 * corresponding to the provided creation request. 
+	 * 
+	 * @param taskCreationRequest containing task details
+	 * @throws IllegalArgumentException if provided argument is {@code null}
+	 */
 	public void create(@NonNull final TaskCreationRequestDto taskCreationRequest) {
 		final var task = new Task();
 		task.setStatus(TaskStatus.NEW);
@@ -59,6 +81,16 @@ public class TaskService {
 		firestore.collection(Task.name()).document().set(task);
 	}
 	
+	/**
+	 * Updates an existing task record corresponding to provided taskId with 
+	 * given request details.
+	 *
+	 * @param taskId the ID of the task to update
+	 * @param taskUpdationRequest the request containing updated task details
+	 * @throws IllegalArgumentException if provided argument is {@code null}
+	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
+	 * @throws TaskOwnershipViolationException if retrieved task is not created by current authenticated user
+	 */
 	public void update(@NonNull final String taskId, @NonNull final TaskUpdationRequestDto taskUpdationRequest) {
 		final var retrievedDocument = get(taskId);
 		final var task = retrievedDocument.toObject(Task.class);
@@ -71,6 +103,14 @@ public class TaskService {
 		firestore.collection(Task.name()).document(retrievedDocument.getId()).set(task);
 	}
 	
+	/**
+	 * Deletes task record corresponding to provided taskId
+	 *
+	 * @param taskId the ID of the task to delete
+	 * @throws IllegalArgumentException if provided argument is {@code null}
+	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
+	 * @throws TaskOwnershipViolationException if retrieved task is not created by current authenticated user
+	 */
 	public void delete(@NonNull final String taskId) {
 		final var document = get(taskId);
 		final var task = document.toObject(Task.class);
@@ -79,6 +119,13 @@ public class TaskService {
 		firestore.collection(Task.name()).document(document.getId()).delete();
 	}
 
+	/**
+	 * Verifies if the given task belongs to the current authenticated user.
+	 *
+	 * @param task the record to be verified for ownership.
+	 * @throws IllegalArgumentException if provided argument is {@code null}
+	 * @throws TaskOwnershipViolationException on validation failure
+	 */
 	private void verifyTaskOwnership(@NonNull final Task task) {
 		final var userId = authenticatedUserIdProvider.getUserId();
 		final var taskBelongsToUser = task.getCreatedBy().equals(userId);
@@ -87,6 +134,14 @@ public class TaskService {
 		}
 	}
 	
+	/**
+	 * Retrieves a task document from Firestore database corresponding to
+	 * its document ID.
+	 *
+	 * @param taskId the ID of the task document to retrieve
+	 * @return the DocumentSnapshot representing the retrieved task document
+	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
+	 */
 	@SneakyThrows
 	private DocumentSnapshot get(@NonNull final String taskId) {
 		final var retrievedDocument = firestore.collection(Task.name()).document(taskId).get().get();
