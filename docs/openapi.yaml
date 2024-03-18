@@ -1,0 +1,366 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: Flare
+  description: Backend application integrating with firebase authentication and storage
+    service to build a secure CRUD application
+servers:
+- url: http://localhost:8080
+  description: Local Backend Server
+tags:
+- name: User Management
+  description: Endpoints for user account and authentication management
+- name: Task Management
+  description: Endpoints for managing tasks.
+paths:
+  /api/v1/tasks/{taskId}:
+    get:
+      tags:
+      - Task Management
+      summary: Retrieves task details
+      description: Retrieve details of a specific task by its ID
+      operationId: retrieve_1
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: "Access denied: Insufficient permissions"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "404":
+          description: No task exists in the system with provided-id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "401":
+          description: "Authentication failure: Invalid access token"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "200":
+          description: Task details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponseDto'
+    put:
+      tags:
+      - Task Management
+      summary: Updates task details
+      description: Update details of a specified task by its ID
+      operationId: update
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdationRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Task details updated successfully
+        "403":
+          description: "Access denied: Insufficient permissions"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "404":
+          description: No task exists in the system with provided-id
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "401":
+          description: "Authentication failure: Invalid access token"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+    delete:
+      tags:
+      - Task Management
+      summary: Deletes a task record
+      description: Delete a specific task by its ID
+      operationId: delete
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Task deleted successfully
+        "403":
+          description: "Access denied: Insufficient permissions"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "404":
+          description: No task exists in the system with provided-id
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "401":
+          description: "Authentication failure: Invalid access token"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+  /api/v1/user:
+    post:
+      tags:
+      - User Management
+      summary: Creates a user record
+      description: Creates a unique user record in the system corresponding to the
+        provided information
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreationRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request body
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "409":
+          description: User account with provided email-id already exists
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "201":
+          description: User record created successfully
+  /api/v1/user/login:
+    post:
+      tags:
+      - User Management
+      summary: Validates user login credentials
+      description: Validates user login credentials and returns access-token on successful
+        authentication
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "401":
+          description: Invalid credentials provided. Failed to authenticate user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "200":
+          description: Authentication successfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenSuccessResponseDto'
+  /api/v1/tasks:
+    get:
+      tags:
+      - Task Management
+      summary: Retrieves all tasks of authenticated user
+      description: Retrieve details of all tasks corresponding to authenticated user
+      operationId: retrieve
+      responses:
+        "401":
+          description: "Authentication failure: Invalid access token"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "200":
+          description: Task details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskResponseDto'
+    post:
+      tags:
+      - Task Management
+      summary: Creates a new task record
+      description: Creates a new task with provided details
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreationRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request body
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "401":
+          description: "Authentication failure: Invalid access token"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseDto'
+        "200":
+          description: Task created successfully
+components:
+  schemas:
+    TaskUpdationRequestDto:
+      title: TaskUpdationRequest
+      required:
+      - Description
+      - DueDate
+      - Status
+      type: object
+      properties:
+        Description:
+          type: string
+          description: description of task
+          example: Resolve user authentication issue detailed in Jira#9051
+        Status:
+          type: string
+          description: status of the task
+          example: COMPLETED
+          enum:
+          - NEW
+          - IN_PROGRESS
+          - COMPLETED
+          - CANCELLED
+        DueDate:
+          type: string
+          description: due-date of the task
+          format: date
+      writeOnly: true
+    ExceptionResponseDto:
+      title: Error
+      type: object
+      properties:
+        Status:
+          type: string
+        Description:
+          type: object
+      readOnly: true
+    UserCreationRequestDto:
+      title: UserCreationRequest
+      required:
+      - EmailId
+      - Password
+      type: object
+      properties:
+        EmailId:
+          type: string
+          description: email-id of user
+          example: hardik.behl7444@gmail.com
+        Password:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+          description: secure password to enable user login
+          example: somethingSecure
+      writeOnly: true
+    UserLoginRequestDto:
+      title: UserLoginRequest
+      required:
+      - EmailId
+      - Password
+      type: object
+      properties:
+        EmailId:
+          type: string
+          description: email-id associated with user account already created in the
+            system
+          example: hardik.behl7444@gmail.com
+        Password:
+          type: string
+          description: password corresponding to provided email-id
+          example: somethingSecure
+      writeOnly: true
+    TokenSuccessResponseDto:
+      title: TokenSuccessResponse
+      type: object
+      properties:
+        AccessToken:
+          type: string
+      readOnly: true
+    TaskCreationRequestDto:
+      title: TaskCreationRequest
+      required:
+      - Description
+      - DueDate
+      - Title
+      type: object
+      properties:
+        Title:
+          type: string
+          description: title of the task
+          example: "Fix Bug: User Authentication"
+        Description:
+          type: string
+          description: description of the task
+          example: Resolve user authentication issue detailed in Jira#9051
+        DueDate:
+          type: string
+          description: due-date of the task
+          format: date
+      writeOnly: true
+    TaskResponseDto:
+      title: TaskResponse
+      type: object
+      properties:
+        Id:
+          type: string
+        Title:
+          type: string
+        Description:
+          type: string
+        Status:
+          type: string
+          enum:
+          - NEW
+          - IN_PROGRESS
+          - COMPLETED
+          - CANCELLED
+        CreatedAt:
+          type: string
+          format: date-time
+        UpdatedAt:
+          type: string
+          format: date-time
+      readOnly: true
+  securitySchemes:
+    Bearer_Authentication:
+      type: http
+      scheme: Bearer
+security:
+- Bearer_Authentication: []
