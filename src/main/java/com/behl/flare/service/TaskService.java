@@ -35,8 +35,7 @@ public class TaskService {
 	 * @return a TaskResponseDto containing details of the retrieved task
 	 * @throws IllegalArgumentException if provided argument is {@code null}
 	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
-	 * @throws TaskOwnershipViolationException if retrieved task is not created 
-	 * 										   by current authenticated user 
+	 * @throws TaskOwnershipViolationException if retrieved task is not created by current authenticated user
 	 */
 	public TaskResponseDto retrieve(@NonNull final String taskId) {
 		final var retrievedDocument = get(taskId);
@@ -90,8 +89,7 @@ public class TaskService {
 	 * @param taskUpdationRequest the request containing updated task details
 	 * @throws IllegalArgumentException if provided argument is {@code null}
 	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
-	 * @throws TaskOwnershipViolationException if task to update is not created 
-	 * 										   by current authenticated user 
+	 * @throws TaskOwnershipViolationException if retrieved task is not created by current authenticated user
 	 */
 	public void update(@NonNull final String taskId, @NonNull final TaskUpdationRequestDto taskUpdationRequest) {
 		final var retrievedDocument = get(taskId);
@@ -111,8 +109,7 @@ public class TaskService {
 	 * @param taskId the ID of the task to delete
 	 * @throws IllegalArgumentException if provided argument is {@code null}
 	 * @throws InvalidTaskIdException if no task exists corresponding to given taskId
-	 * @throws TaskOwnershipViolationException if task to delete is not created 
-	 * 										   by current authenticated user 
+	 * @throws TaskOwnershipViolationException if retrieved task is not created by current authenticated user
 	 */
 	public void delete(@NonNull final String taskId) {
 		final var document = get(taskId);
