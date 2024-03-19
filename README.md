@@ -47,6 +47,7 @@ The above JSON response is dispatched to the client as a result of [CustomAuthen
 To run the application locally, ensure you have the following prerequisites:
 * A private key associated with the service account to establish a connection with Firebase.
 * The Web API key of the Firebase project you've created to invoke the Firebase Authentication REST API.
+* The created Firebase Authentication service has the `Email/Password` native sign-in provider enabled.
 
 Create a file named `private-key.json` in the base directory and paste the contents of the service account's private key into this file.
 
