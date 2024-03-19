@@ -38,7 +38,7 @@ public class TaskController {
 	private final TaskService taskService;
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Creates a new task record", description = "Creates a new task with provided details")
+	@Operation(summary = "Creates a new task record", description = "Creates a new task with provided details")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Task created successfully",
 					content = @Content(schema = @Schema(implementation = Void.class))),
@@ -52,7 +52,7 @@ public class TaskController {
 	}
 
 	@GetMapping(value = "/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Retrieves task details", description = "Retrieve details of a specific task by its ID")
+	@Operation(summary = "Retrieves task details", description = "Retrieve details of a specific task by its ID")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Task details retrieved successfully"),
 			@ApiResponse(responseCode = "404", description = "No task exists in the system with provided-id",
@@ -68,7 +68,7 @@ public class TaskController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Retrieves all tasks of authenticated user", description = "Retrieve details of all tasks corresponding to authenticated user")
+	@Operation(summary = "Retrieves all tasks of authenticated user", description = "Retrieve details of all tasks corresponding to authenticated user")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Task details retrieved successfully"),
 			@ApiResponse(responseCode = "401", description = "Authentication failure: Invalid access token",
@@ -79,7 +79,7 @@ public class TaskController {
 	}
 
 	@PutMapping(value = "/{taskId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Updates task details", description = "Update details of a specified task by its ID")
+	@Operation(summary = "Updates task details", description = "Update details of a specified task by its ID")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Task details updated successfully",
 					content = @Content(schema = @Schema(implementation = Void.class))),
@@ -96,7 +96,7 @@ public class TaskController {
 	}
 
 	@DeleteMapping(value = "/{taskId}")
-    @Operation(summary = "Deletes a task record", description = "Delete a specific task by its ID")
+	@Operation(summary = "Deletes a task record", description = "Delete a specific task by its ID")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Task deleted successfully",
 					content = @Content(schema = @Schema(implementation = Void.class))),
